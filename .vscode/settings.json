@@ -1,5 +1,4 @@
 {
-    "python.pythonPath": ".venv/bin/python",
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.terminal.activateEnvironment": true,
     "python.poetryPath": "~/.poetry/bin/poetry",
@@ -9,5 +8,6 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "python.defaultInterpreterPath": ".venv/bin/python"
 }

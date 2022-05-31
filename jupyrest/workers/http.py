@@ -20,7 +20,7 @@ from jupyrest.errors import (
     InputSchemaValidationError,
 )
 from typing import Dict
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from uuid import uuid4
 from nbconvert import HTMLExporter
 from opentelemetry import trace
@@ -56,6 +56,7 @@ def notebook_to_str(notebook: NotebookNode) -> str:
         )
 
 
+
 def create_dev_app(worker: Worker):
     app = FastAPI(title="Jupyrest Web Server", debug=True)
     notebooks: Dict[str, NotebookNode] = {}
@@ -84,17 +85,17 @@ def create_dev_app(worker: Worker):
             return HTTPException(status_code=500)
 
     @app.post("/api/NotebookExecutions")
-    async def post(req: NotebookRequest) -> NotebookResponse:
+    async def post(req: NotebookRequest, background_tasks: BackgroundTasks) -> NotebookResponse:
         # create NotebookExecutionRequest
         notebook_id = req.notebook
         parameters = req.parameters
         execution_id = str(uuid4())
-        # execute notebook
+        # validate notebook
         result = await worker.execute_notebook_async(
             plugin_name=plugin_name,
             notebook_id=notebook_id,
             parameters=parameters,
-            parameterize_only=False,
+            parameterize_only=True,
         )
 
         if isinstance(result, BaseError):
