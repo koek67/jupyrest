@@ -60,6 +60,10 @@ class ModelCollection:
     def is_empty(self) -> bool:
         return len(self._map.keys()) == 0
 
+    def iter_models(self):
+        for alias in self._map:
+            yield (alias, self._map[alias])
+
 
 class NbSchemaEncoder(json.JSONEncoder):
     """

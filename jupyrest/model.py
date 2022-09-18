@@ -1,6 +1,13 @@
 from pydantic import BaseModel, parse_obj_as
-from typing import Callable, Type, Dict
-
+from pydantic.fields import SHAPE_SINGLETON, SHAPE_SET
+from typing import Callable, Type, Dict, Optional
+from abc import ABC, abstractmethod
+from datetime import datetime, time, date
+from decimal import Decimal
+from rdflib import Namespace, Literal, Graph
+from rdflib.namespace._RDF import RDF
+from rdflib.term import URIRef
+from rdflib.namespace import NamespaceManager
 
 class NamedModelConflict(Exception):
     pass
@@ -131,3 +138,54 @@ class NamedModel(BaseModel):
                 schema["required"].append(NS_KEY)
             else:
                 schema["required"] = [NS_KEY]
+
+
+class BaseRdfModel(ABC, BaseModel):
+
+    @abstractmethod
+    def uid(self) -> str:
+        pass
+
+    class Config:
+        ns: Namespace
+
+    def __eq__(self, __o: object) -> bool:
+        return self.__hash__().__eq__(__o.__hash__())
+
+    def __hash__(self) -> int:
+        return hash(self.Config.ns[self.uid()])
+    
+    def to_triples(self):
+        
+        def get_fields(obj: BaseRdfModel):
+            for field_name in type(obj).__fields__:
+                model_field = type(obj).__fields__[field_name]
+                if model_field.shape in (SHAPE_SINGLETON, SHAPE_SET):
+                    field_value = getattr(obj, field_name)
+                    yield (field_name, field_value)
+
+        def coalesce_triples(first, second):
+            subj1, pred1, obj1 = first
+            subj2, pred2, obj2 = second
+            subj = subj1 if subj1 is not None else subj2
+            pred = pred1 if pred1 is not None else pred2
+            obj = obj1 if obj1 is not None else obj2
+            return (subj, pred, obj)
+
+        def to_triples_inner(obj):
+            if isinstance(obj, set):
+                for item in obj:
+                    yield from to_triples_inner(item)
+            elif isinstance(obj, (str, int, bool, float, Decimal, date, time, datetime)):
+                yield (None, None, Literal(obj))
+            elif isinstance(obj, BaseRdfModel):
+                yield (None, None, type(obj).Config.ns[obj.uid()])
+                yield from obj.to_triples()
+
+        uid = type(self).Config.ns[self.uid()]
+        yield (uid, RDF.type, Literal(str(type(self).Config.ns[type(self).__name__])))
+        for field_name, field_value in get_fields(self):
+            edge = type(self).Config.ns[field_name]
+            base_triple = (uid, edge, None)
+            for triple in to_triples_inner(field_value):
+                yield coalesce_triples(triple, base_triple)

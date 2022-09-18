@@ -1,0 +1,17 @@
+{
+    "input": {
+        "type": "object",
+        "properties": {
+            "customer_id": {
+                "type": "string"
+            },
+            "ip_address": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "customer_id",
+            "ip_address"
+        ]
+    }
+}

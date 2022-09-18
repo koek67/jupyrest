@@ -1,0 +1,121 @@
+@prefix ns1: <file:///home/koushikkrishnan/code/jupyrest/sample_notebooks/nodes/> .
+@prefix ns2: <file:///home/koushikkrishnan/code/jupyrest/sample_notebooks/incidents/> .
+@prefix ns21: <file:///home/koushikkrishnan/code/jupyrest/sample_notebooks/replicas/> .
+@prefix ns3: <services/> .
+@prefix ns4: <nodes/> .
+@prefix ns5: <customers/> .
+@prefix ns6: <replicas/> .
+@prefix ns7: <incidents/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns2:001 a "incidents/SlowDisk" ;
+    ns2:incident_id "001" ;
+    ns2:incident_time "2022-01-01T00:00:00"^^xsd:dateTime ;
+    ns2:node ns1:212 .
+
+ns2:002 a "incidents/ReplicaResends" ;
+    ns2:dest_replica ns21:706cd ;
+    ns2:incident_id "002" ;
+    ns2:incident_time "2022-01-01T00:01:00"^^xsd:dateTime ;
+    ns2:src_replica ns21:9f58f .
+
+ns2:003 a "incidents/SlowDisk" ;
+    ns2:incident_id "003" ;
+    ns2:incident_time "2022-01-01T00:02:00"^^xsd:dateTime ;
+    ns2:node ns1:900 .
+
+ns2:004 a "incidents/ReplicaResends" ;
+    ns2:dest_replica ns21:1e55e ;
+    ns2:incident_id "004" ;
+    ns2:incident_time "2022-01-01T00:03:00"^^xsd:dateTime ;
+    ns2:src_replica ns21:8b3f9 .
+
+ns7:005 a "incidents/SLADip" ;
+    ns7:customer ns5:Paddys_Pub ;
+    ns7:incident_id "005" ;
+    ns7:incident_time "2022-01-01T00:04:00"^^xsd:dateTime .
+
+ns5:Paddys_Pub a "customers/Customer" ;
+    ns5:customer_id "Paddys_Pub" ;
+    ns5:services ns3:a349f9,
+        ns3:b59d2 .
+
+ns1:212 a "nodes/Node" ;
+    ns1:node_id "212" .
+
+ns1:900 a "nodes/Node" ;
+    ns1:node_id "900" .
+
+ns21:1e55e a "replicas/Replica" ;
+    ns21:replica_id "1e55e" .
+
+ns21:706cd a "replicas/Replica" ;
+    ns21:replica_id "706cd" .
+
+ns21:8b3f9 a "replicas/Replica" ;
+    ns21:replica_id "8b3f9" .
+
+ns21:9f58f a "replicas/Replica" ;
+    ns21:replica_id "9f58f" .
+
+ns4:498 a "nodes/Node" ;
+    ns4:node_id "498" .
+
+ns4:900 a "nodes/Node" ;
+    ns4:node_id "900" .
+
+ns6:1e55e a "replicas/Replica" ;
+    ns6:node ns4:212 ;
+    ns6:replica_id "1e55e" .
+
+ns6:3c06c a "replicas/Replica" ;
+    ns6:node ns4:803 ;
+    ns6:replica_id "3c06c" .
+
+ns6:6e795 a "replicas/Replica" ;
+    ns6:node ns4:601 ;
+    ns6:replica_id "6e795" .
+
+ns6:706cd a "replicas/Replica" ;
+    ns6:node ns4:212 ;
+    ns6:replica_id "706cd" .
+
+ns6:8b3f9 a "replicas/Replica" ;
+    ns6:node ns4:803 ;
+    ns6:replica_id "8b3f9" .
+
+ns6:9f58f a "replicas/Replica" ;
+    ns6:node ns4:498 ;
+    ns6:replica_id "9f58f" .
+
+ns6:c385f a "replicas/Replica" ;
+    ns6:node ns4:601 ;
+    ns6:replica_id "c385f" .
+
+ns6:f976f a "replicas/Replica" ;
+    ns6:node ns4:900 ;
+    ns6:replica_id "f976f" .
+
+ns3:a349f9 a "services/Service" ;
+    ns3:replicas ns6:3c06c,
+        ns6:6e795,
+        ns6:706cd,
+        ns6:9f58f ;
+    ns3:service_name "a349f9" .
+
+ns3:b59d2 a "services/Service" ;
+    ns3:replicas ns6:1e55e,
+        ns6:8b3f9,
+        ns6:c385f,
+        ns6:f976f ;
+    ns3:service_name "b59d2" .
+
+ns4:212 a "nodes/Node" ;
+    ns4:node_id "212" .
+
+ns4:601 a "nodes/Node" ;
+    ns4:node_id "601" .
+
+ns4:803 a "nodes/Node" ;
+    ns4:node_id "803" .
+

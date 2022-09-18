@@ -1,0 +1,25 @@
+{
+    "input": {
+        "type": "object",
+        "properties": {
+            "src_replica_id": {
+                "type": "string"
+            },
+            "dest_replica_id": {
+                "type": "string"
+            },
+            "incident_time": {
+                "type": "string"
+            },
+            "incident_id": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "src_replica_id",
+            "dest_replica_id",
+            "incident_time",
+            "incident_id"
+        ]
+    }
+}

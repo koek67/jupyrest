@@ -1,0 +1,21 @@
+{
+    "input": {
+        "type": "object",
+        "properties": {
+            "node_id": {
+                "type": "string"
+            },
+            "incident_time": {
+                "type": "string"
+            },
+            "incident_id": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "node_id",
+            "incident_time",
+            "incident_id"
+        ]
+    }
+}

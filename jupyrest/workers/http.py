@@ -31,7 +31,7 @@ tracer = trace.get_tracer(__name__)
 class NotebookRequest(BaseModel):
     notebook: str
     parameters: Dict
-
+    parameterize_only: bool = False
 
 class NotebookResponse(BaseModel):
     id: str
@@ -89,12 +89,13 @@ def create_dev_app(worker: Worker):
         notebook_id = req.notebook
         parameters = req.parameters
         execution_id = str(uuid4())
+        parameterize_only = req.parameterize_only
         # execute notebook
         result = await worker.execute_notebook_async(
             plugin_name=plugin_name,
             notebook_id=notebook_id,
             parameters=parameters,
-            parameterize_only=False,
+            parameterize_only=parameterize_only,
         )
 
         if isinstance(result, BaseError):
@@ -105,8 +106,9 @@ def create_dev_app(worker: Worker):
 
         event_store = NotebookEventStore(notebook=result)
         notebook_executed = event_store.get_event(NotebookExecuted)
-        assert isinstance(notebook_executed, NotebookExecuted)
-        status = "COMPLETED" if notebook_executed.exception is None else "FAILED"
+        status = "ACCEPTED"
+        if isinstance(notebook_executed, NotebookExecuted):
+            status = "COMPLETED" if notebook_executed.exception is None else "FAILED"
         response = NotebookResponse(
             id=execution_id,
             status=status,

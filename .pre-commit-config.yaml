@@ -1,10 +1,10 @@
 default_language_version:
-  python: python3.7
+  python: python3.8
 repos:
   - repo: https://github.com/psf/black
     rev: 19.10b0
     hooks:
       - id: black
         name: black
-        language_version: python3.7
+        language_version: python3.8
         exclude: (.)*(.generated.py)
