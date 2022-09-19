@@ -1,6 +1,5 @@
 from datetime import datetime
 from jupyrest.nbschema import SchemaValidationResponse
-from jupyrest.workers.generated.jupyrest_pb2 import Notebook
 import logging
 from logging import Logger
 import json

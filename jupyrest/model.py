@@ -67,6 +67,15 @@ class NamedModel(BaseModel):
         d[self.Config.NS_KEY] = getattr(self, self.Config.NS_KEY)
         return d
 
+
+    def json(self, *args, **kwargs):
+        """When we convert to a json, we want
+        to save the name of the model.
+        """
+        d = super().json(*args, **kwargs)
+        d[self.Config.NS_KEY] = getattr(self, self.Config.NS_KEY)
+        return d
+
     @classmethod
     def parse_obj(cls, data, *args, **kwargs):
         NS_KEY = cls.Config.NS_KEY

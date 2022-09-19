@@ -1,34 +1,48 @@
-Notebooks
+Functions
 
 ```
-GET /api/v1/notebooks/:id -> get config.json
-POST /api/v1/notebooks/:id/execute
-POST /api/v1/notebooks/:id/parameterize
+GET  /workspaces/:id/notebooks
+GET  /workspaces/:id/notebooks/:id
+POST /workspaces/:id/notebooks/:id/execute
+POST /workspaces/:id/notebooks/:id/parameterize
+
+# Later
+GET  /workspaces/:id/notebooks?id=$id
+POST /workspaces/:id/notebooks/execute?id=$id
+POST /workspaces/:id/notebooks/parameterize?id=$id
 ```
 
 Notebook Instances
 
 ```
-GET /api/v1/notebook_instances/:id
-GET /api/v1/notebook_instances/:id/output
-GET /api/v1/notebook_instances/:id/html?report=true
-GET /api/v1/notebook_instances/:id/ipynb
-
-
-GET /api/v1/notebook_instances/:id/status
-GET /api/v1/notebook_instances/:id/editor
+GET /workspaces/:id/notebook_executions/:id
+GET /workspaces/:id/notebook_executions/:id/output
+GET /workspaces/:id/notebook_executions/:id/html?report=true
+GET /workspaces/:id/notebook_executions/:id/notebook
+GET /workspaces/:id/notebook_executions/:id/editor
 ```
 
 Instance metadata:
 
 ```json
 {
-    "notebook": "io_contract_example",
-    "executed": false,
+    "id": "some-guid",
+    "parent_id": null,
+    "notebook_id": "io_contract_example",
+    "attempts": [
+        {
+            "attempt_id": "",
+            "start_time": "",
+            "end_time": "",
+            "failure": {
+                "type": "",
+                "details": ""
+            }
+        }
+    ],
     "parameters": {
         "foo": "FOO",
         "bar": 500
-    },
-    "exception": "str"
+    }
 }
 ```
